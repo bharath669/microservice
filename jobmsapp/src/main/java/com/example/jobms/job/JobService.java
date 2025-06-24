@@ -1,6 +1,5 @@
 package com.example.jobms.job;
 
-import com.example.jobms.job.dto.JobCompanyDTO;
 
 import java.util.List;
 
@@ -10,11 +9,11 @@ public interface JobService {
 
     boolean deleteJobById(long id);
 
-    List<JobCompanyDTO> findAll();
+    List<Job> findAll();
 
     void createJob(Job job);
 
 
-    JobCompanyDTO getJobById(Long id);
+    Job getJobById(Long id);
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
-public class ReviewController {
+public class    ReviewController {
     private ReviewService reviewService;
 
     public ReviewController(ReviewService reviewService){
