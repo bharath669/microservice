@@ -1,0 +1,30 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: zipkin-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zipkin
+      MYSQL_USER: zipkin
+      MYSQL_PASSWORD: zipkin
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9413:9411"
+    environment:
+      STORAGE_TYPE: mysql
+      MYSQL_HOST: mysql
+      MYSQL_USER: zipkin
+      MYSQL_PASS: zipkin
+      MYSQL_DB: zipkin
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
