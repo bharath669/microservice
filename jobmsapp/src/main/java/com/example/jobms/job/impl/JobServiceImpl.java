@@ -1,5 +1,7 @@
 package com.example.jobms.job.impl;
 
+import com.example.jobms.job.Clients.CompanyClient;
+import com.example.jobms.job.Clients.ReviewClient;
 import com.example.jobms.job.Job;
 import com.example.jobms.job.JobRepository;
 import com.example.jobms.job.JobService;
@@ -24,11 +26,15 @@ public class JobServiceImpl implements JobService {
 
     //    private List<Job> jobs=new ArrayList<>();
     JobRepository jobRepository;
+    private CompanyClient companyClient;
+    private ReviewClient reviewClient;
     @Autowired
     RestTemplate restTemplate;
 
-    public JobServiceImpl(JobRepository jobRepository) {
+    public JobServiceImpl(JobRepository jobRepository,CompanyClient companyClient,ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
+        this.companyClient = companyClient;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -39,13 +45,8 @@ public class JobServiceImpl implements JobService {
     }
 
         public JobDTO convertToDo(Job job){
-            Company company = restTemplate.getForObject("http://company-service:8084/companies/"
-                    + job.getCompanyId(), Company.class);
-            ResponseEntity <List<Review>> reviewResponse= restTemplate.exchange("http://review-service:8083/reviews?companyId="
-                    + job.getCompanyId(), HttpMethod.GET, null,
-                    new ParameterizedTypeReference<List<Review>>() {
-                    });
-            List<Review> reviews=reviewResponse.getBody();
+            Company company = companyClient.getCompany(job.getCompanyId());
+            List<Review> reviews=reviewClient.getReviews(job.getCompanyId());
             JobDTO jobDTO = JobMapper.
                     mapToJobWithCompanyDto(company,job,reviews);
             //jobDTO.setCompany(company);
