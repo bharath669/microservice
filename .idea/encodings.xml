@@ -4,5 +4,7 @@
     <file url="file://$PROJECT_DIR$/Reviewms/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/companymsapp/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jobmsapp/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-reg/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../service-reg/src/main/java" charset="UTF-8" />
   </component>
 </project>
