@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -24,19 +25,20 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobWithCompanyDTO> findAll() {
-        List<Job> jobs=jobRepository.findAll();
-        List<JobWithCompanyDTO> jobWithCompanyDTOS=new ArrayList<>();
+        List<Job> jobs = jobRepository.findAll();
+        List<JobWithCompanyDTO> jobWithCompanyDTOS = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
+        return jobs.stream().map(this::convertToDo).collect(Collectors.toList());
+    }
 
-        for (Job job:jobs) {
+        public JobWithCompanyDTO convertToDo(Job job){
             JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
             jobWithCompanyDTO.setJob(job);
+            RestTemplate restTemplate = new RestTemplate();
             Company company = restTemplate.getForObject("http://localhost:8084/companies/"
                     + job.getCompanyId(), Company.class);
             jobWithCompanyDTO.setCompany(company);
-            jobWithCompanyDTOS.add(jobWithCompanyDTO);
-        }
-        return jobWithCompanyDTOS;
+            return jobWithCompanyDTO;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean deleteJobById(long id) {
+    public boolean deleteJobById(Long id) {
         try {
             jobRepository.deleteById(id);
             return true;
@@ -58,6 +60,20 @@ public class JobServiceImpl implements JobService {
             return false;
         }
     }
+
+    @Override
+    public boolean deleteJobAll() {
+        try {
+            jobRepository.deleteAll();
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+
+
+
     @Override
     public boolean updateJob(Long id, Job updatedJob) {
         Optional<Job> jobOptional=jobRepository.findById(id);
@@ -71,6 +87,7 @@ public class JobServiceImpl implements JobService {
             job.setLocation(updatedJob.getLocation());
             job.setMaxSalary(updatedJob.getMaxSalary());
             job.setMinSalary(updatedJob.getMinSalary());
+            job.setCompanyId(updatedJob.getCompanyId());
             jobRepository.save(job);
             return true;
         }

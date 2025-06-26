@@ -9,7 +9,9 @@ public interface JobService {
 
     boolean updateJob(Long id, Job updatedJob);
 
-    boolean deleteJobById(long id);
+    boolean deleteJobById(Long id);
+
+    boolean deleteJobAll();
 
     List<JobWithCompanyDTO> findAll();
 
