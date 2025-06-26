@@ -1,7 +1,7 @@
 package com.example.jobms.job;
 
 
-import com.example.jobms.job.dto.JobWithCompanyDTO;
+import com.example.jobms.job.dto.JobDTO;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ public interface JobService {
 
     boolean deleteJobAll();
 
-    List<JobWithCompanyDTO> findAll();
+    List<JobDTO> findAll();
 
     void createJob(Job job);
 
 
-    JobWithCompanyDTO getJobById(Long id);
+    JobDTO getJobById(Long id);
 
 }
